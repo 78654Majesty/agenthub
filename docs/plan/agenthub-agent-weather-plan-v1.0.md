@@ -16,9 +16,9 @@
 
 ### 2.1 关联需求
 
-- [agenthub-spec-v1.md](/Users/fang/Documents/work/huifu/workspace/hfpay-agenthub-web/docs/spec/agenthub-spec-v1.md)
-- [provider-x402-agent-guide.md](/Users/fang/Documents/work/huifu/workspace/hfpay-agenthub-web/docs/guide/provider-x402-agent-guide.md)
-- [AGENTS.md](/Users/fang/Documents/work/huifu/workspace/hfpay-agenthub-web/AGENTS.md)
+- [agenthub-spec-v1.md](../spec/agenthub-spec-v1.md)
+- [provider-x402-agent-guide.md](../guide/provider-x402-agent-guide.md)
+- [AGENTS.md](../../AGENTS.md)
 
 ### 2.2 计划目标
 

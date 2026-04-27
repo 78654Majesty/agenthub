@@ -73,7 +73,7 @@
 
 ### 6.1 启动 Gateway 主服务
 
-在 [package.json](C:\Users\hanchao.wang\repos\hfpay-agenthub-web\agenthub-gateway\apps\gateway\package.json) 所在目录执行：
+在 [package.json](../../../agenthub-gateway/apps/gateway/package.json) 所在目录执行：
 
 ```powershell
 cd agenthub-gateway/apps/gateway
@@ -90,7 +90,7 @@ pnpm start:dev
 
 ### 6.2 执行 Plugin 侧 smoke 验证
 
-在 [package.json](C:\Users\hanchao.wang\repos\hfpay-agenthub-web\agenthub-plugin\package.json) 所在目录执行：
+在 [package.json](../../../agenthub-plugin/package.json) 所在目录执行：
 
 ```powershell
 cd agenthub-plugin

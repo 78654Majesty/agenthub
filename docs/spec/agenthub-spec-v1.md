@@ -172,7 +172,7 @@ AgentHub = Claude Code Plugin（CLI 消费入口）
 ## 4. 仓库结构
 
 ```
-hfpay-agenthub-web/                       ← 仓库根目录
+agenthub/                       ← 仓库根目录
 │
 ├── agenthub-gateway/                      ← 子目录 1：后端 + Web + 合约
 │   ├── apps/

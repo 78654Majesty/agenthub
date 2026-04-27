@@ -5,7 +5,7 @@
 ## 项目结构
 
 ```
-hfpay-agenthub-web/           ← 仓库根目录（不是 monorepo root）
+agenthub/                       ← 仓库根目录（不是 monorepo root）
 ├── agenthub-gateway/          ← 子目录 1：后端 API + Web 前端 + 共享包（pnpm workspace）
 ├── agenthub-plugin/           ← 子目录 2：Claude Code MCP Plugin（独立项目）
 └── docs/                      ← 设计文档

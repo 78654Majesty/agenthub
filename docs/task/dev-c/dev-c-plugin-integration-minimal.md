@@ -75,7 +75,7 @@
 
 4. 总任务文档与进度日志回写
    [dev-c-plugin-auth.md](../dev-c-plugin-auth.md)
-   [dev-c.md](C:\Users\hanchao.wang\repos\hfpay-agenthub-web\docs\progress\dev-c.md)
+   [dev-c.md](../../../docs/progress/dev-c.md)
 
 ### 5.1 当前已完成
 
