@@ -1,0 +1,56 @@
+# ---- Stage 1: Install dependencies ----
+FROM node:20-alpine AS deps
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/gateway/package.json ./apps/gateway/
+COPY packages/types/package.json ./packages/types/
+COPY packages/auth/package.json ./packages/auth/
+COPY packages/chain/package.json ./packages/chain/
+
+RUN pnpm install --frozen-lockfile
+
+# ---- Stage 2: Build ----
+FROM node:20-alpine AS builder
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+WORKDIR /app
+
+COPY --from=deps /app/ ./
+COPY . .
+
+# Generate Prisma client and build gateway only
+RUN npx prisma generate --schema=prisma/schema.prisma --no-hints
+RUN pnpm --filter @agenthub/gateway run build
+
+# ---- Stage 3: Production image ----
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Install runtime tools for DB migration and seeding
+RUN npm install -g prisma@6.19.3 tsx
+
+# Copy gateway build output
+COPY --from=builder /app/apps/gateway/dist ./dist
+COPY --from=builder /app/apps/gateway/package.json ./package.json
+COPY --from=builder /app/apps/gateway/node_modules ./node_modules
+
+# Copy Prisma schema + seed
+COPY --from=builder /app/prisma ./prisma
+
+# Copy Prisma generated client
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+
+# Copy entrypoint script
+COPY docker-entrypoint.sh ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
+
+# Create data directory for SQLite
+RUN mkdir -p /app/data
+
+EXPOSE 8080
+
+ENTRYPOINT ["./docker-entrypoint.sh"]

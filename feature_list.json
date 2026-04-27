@@ -1,0 +1,100 @@
+{
+  "features": [
+    {
+      "id": "feat-001",
+      "name": "Gateway API 基础结构",
+      "description": "Fastify API 基础框架、路由加载器、中间件",
+      "dependencies": [],
+      "status": "done",
+      "evidence": "gateway/src/index.ts, gateway/src/route-loader.ts, gateway/src/middleware/"
+    },
+    {
+      "id": "feat-002",
+      "name": "Prisma ORM 配置",
+      "description": "数据库模型、迁移、种子数据",
+      "dependencies": [],
+      "status": "done",
+      "evidence": "agenthub-gateway/prisma/schema.prisma, agenthub-gateway/prisma/seed.ts"
+    },
+    {
+      "id": "feat-003",
+      "name": "Web 前端基础结构",
+      "description": "Next.js 14 App Router、Tailwind CSS、布局组件",
+      "dependencies": [],
+      "status": "done",
+      "evidence": "agenthub-gateway/apps/web/src/app/layout.tsx, agenthub-gateway/apps/web/next.config.ts"
+    },
+    {
+      "id": "feat-004",
+      "name": "链上集成模块",
+      "description": "ERC-8004 身份、x402 支付、IPFS 元数据",
+      "dependencies": ["feat-001"],
+      "status": "done",
+      "evidence": "agenthub-gateway/packages/chain/src/"
+    },
+    {
+      "id": "feat-005",
+      "name": "认证系统",
+      "description": "钱包签名认证、JWT 令牌、管理员认证",
+      "dependencies": ["feat-001"],
+      "status": "in-progress",
+      "evidence": "agenthub-gateway/packages/auth/src/, agenthub-gateway/apps/gateway/src/routes/public-auth/index.ts, agenthub-gateway/apps/gateway/src/services/auth.service.ts"
+    },
+    {
+      "id": "feat-006",
+      "name": "市场平台功能",
+      "description": "Agent 列表、详情页面、搜索过滤",
+      "dependencies": ["feat-001", "feat-003"],
+      "status": "in-progress",
+      "evidence": "agenthub-gateway/apps/web/src/app/marketplace/"
+    },
+    {
+      "id": "feat-007",
+      "name": "Provider 控制台",
+      "description": "Agent 注册、管理、订单查看",
+      "dependencies": ["feat-001", "feat-003"],
+      "status": "in-progress",
+      "evidence": "agenthub-gateway/apps/web/src/app/provider/"
+    },
+    {
+      "id": "feat-008",
+      "name": "Consumer 控制台",
+      "description": "Agent 使用、订单管理、钱包连接",
+      "dependencies": ["feat-001", "feat-003"],
+      "status": "in-progress",
+      "evidence": "agenthub-gateway/apps/web/src/app/dashboard/"
+    },
+    {
+      "id": "feat-009",
+      "name": "Admin 控制台",
+      "description": "用户管理、Agent 审核、系统监控",
+      "dependencies": ["feat-001", "feat-003"],
+      "status": "in-progress",
+      "evidence": "agenthub-gateway/apps/web/src/app/admin/"
+    },
+    {
+      "id": "feat-010",
+      "name": "Codex MCP Plugin",
+      "description": "MCP SDK 集成、命令处理、钱包桥接",
+      "dependencies": [],
+      "status": "in-progress",
+      "evidence": "agenthub-plugin/src/index.ts, agenthub-plugin/src/tools.ts, agenthub-plugin/src/gateway-client.ts, agenthub-plugin/src/x402-client.ts, agenthub-plugin/src/wallet-bridge/sdk.ts, agenthub-plugin/src/wallet-bridge/wallet.ts, agenthub-plugin/commands/connect.md, agenthub-plugin/commands/faucet.md, agenthub-plugin/commands/run.md, agenthub-gateway/prisma/seed.ts, agenthub-gateway/apps/gateway/src/routes/public-auth/index.ts, agenthub-gateway/apps/gateway/src/routes/consumer/index.ts, agenthub-gateway/apps/gateway/src/services/auth.service.ts, agenthub-gateway/apps/gateway/src/services/match.service.ts, agenthub-gateway/apps/gateway/src/services/consumer/index.ts, docs/api/auth-connect-api-v1.0.md, docs/task/dev-c-plugin-auth.md, docs/task/dev-c/dev-c-real-weather-x402-minimal.md, docs/progress/dev-c.md"
+    },
+    {
+      "id": "feat-011",
+      "name": "Harness 工程支持",
+      "description": "AGENTS.md 优化、feature_list.json、init.sh、progress.md、文档目录结构",
+      "dependencies": [],
+      "status": "done",
+      "evidence": "AGENTS.md, feature_list.json, init.sh, docs/progress/, docs/progress/dev-p.md, docs/spec/, docs/spec/spec-index.md, docs/plan/, docs/plan/plan-index.md, docs/task/, docs/task/task-index.md, docs/schema/, docs/schema/schema-index.md, docs/ui/, docs/ui/ui-index.md, docs/api/, docs/api/api-index.md, docs/rules/, docs/rules/agenthub-gateway.md（优化）, docs/rules/agenthub-plugin.md, docs/rules/agenthub-plugin-code-guidelines.md, docs/rules/prohibited-operations.md, docs/rules/git-guidelines.md, docs/rules/agenthub-gateway-code-guidelines.md（优化）, docs/rules/team-roles.md, docs/conf/, docs/conf/env-variables.md"
+    },
+    {
+      "id": "feat-012",
+      "name": "Provider Weather Agent Demo",
+      "description": "新增 Python x402 Provider 应用 agenthub-agent-weather（Solana Devnet + USDC + 当前天气查询）",
+      "dependencies": ["feat-006", "feat-010"],
+      "status": "in-progress",
+      "evidence": "agenthub-agent-weather/README.md, agenthub-agent-weather/src/agenthub_agent_weather/main.py, agenthub-agent-weather/src/agenthub_agent_weather/pricing.py, agenthub-agent-weather/src/agenthub_agent_weather/weather.py, agenthub-agent-weather/.env.example, docs/plan/agenthub-agent-weather-plan-v1.0.md"
+    }
+  ]
+}

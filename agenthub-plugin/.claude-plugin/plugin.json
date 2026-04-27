@@ -1,0 +1,20 @@
+{
+  "name": "agenthub",
+  "version": "0.1.1",
+  "description": "Claude Code wrapper for the AgentHub MCP server. Exposes /agenthub:* commands and bundles the local MCP runtime.",
+  "author": {
+    "name": "Dev C"
+  },
+  "commands": [
+    "./commands/connect.md",
+    "./commands/faucet.md",
+    "./commands/run.md"
+  ],
+  "keywords": [
+    "agenthub",
+    "mcp",
+    "wallet",
+    "auth",
+    "claude-code"
+  ]
+}

@@ -1,0 +1,271 @@
+---
+name: prompt-thinking-coach
+description: >-
+  Improve an AI Agent's question quality and thinking quality: clarify vague
+  requests, choose expert perspectives, ask for missing context, challenge
+  assumptions, pre-mortem plans, reverse-engineer prompts, and explain concepts
+  at multiple depths.
+when_to_use: >-
+  Use when the user wants to improve prompts, clarify questions, deepen thinking,
+  design better AI interactions, prepare high-quality requests, or turn vague
+  goals into precise instructions. Also use when answer quality depends on
+  improving the question before answering.
+license: MIT
+---
+
+# Prompt Thinking Coach
+
+Use this skill to turn vague requests into high-quality AI collaboration. The goal is not to produce clever prompt templates, but to design a better thinking process before answering.
+
+## Core Principle
+
+A good prompt is not magic wording. It is clear communication plus deliberate thinking design.
+
+When using this skill, help the user become the director of the question:
+
+- Clarify the real goal
+- Add missing context
+- Choose the right thinking perspective
+- Surface assumptions and risks
+- Challenge weak ideas
+- Convert examples into reusable patterns
+- Explain at the right depth
+
+## When To Use
+
+Use this skill when the user asks to:
+
+- improve a prompt
+- write a better question for AI
+- think through an unclear problem
+- design an AI workflow
+- get better answers from an AI tool
+- turn an idea into a precise request
+- review or strengthen a plan, argument, product idea, article, decision, or strategy
+- learn a concept with both simple and professional explanations
+
+Also use it when the user's request is broad, under-specified, or likely to produce a shallow answer unless clarified first.
+
+## Workflow
+
+### 1. Identify The Request Type
+
+Classify the user's request into one primary mode:
+
+- **Clarification mode**: The user has a vague goal and needs better framing
+- **Expert role mode**: The user needs domain-specific judgment but does not know which expert perspective fits
+- **Socratic mode**: The user needs the agent to ask questions before answering
+- **Debate mode**: The user has an idea, claim, or plan that needs challenge
+- **Pre-mortem mode**: The user has a plan and needs failure risks surfaced
+- **Reverse prompt mode**: The user has an example output and wants to reproduce or learn its structure
+- **Dual explanation mode**: The user wants to understand an unfamiliar concept
+
+If multiple modes apply, choose the one that most improves answer quality first.
+
+### 2. Decide Whether To Ask Before Answering
+
+Ask a clarification question when the missing context would materially change the answer.
+
+Prefer one strong question over many weak questions.
+
+Do not ask for clarification if a reasonable assumption is enough. In that case, state the assumption briefly and proceed.
+
+Use this pattern when the user explicitly wants high confidence before answering:
+
+```text
+Before I answer, I need to clarify one thing: [most important missing variable].
+```
+
+### 3. Use The Six Prompt Thinking Moves
+
+#### Move 1: Let AI Choose The Expert Role
+
+Use when the user needs expert judgment but has not chosen a perspective.
+
+Ask or internally determine:
+
+- What domain is this?
+- What kind of expert would think best about it?
+- Should the expert be practical, theoretical, critical, creative, operational, or strategic?
+
+Reusable instruction:
+
+```text
+Before answering, choose the most suitable expert perspective for this problem.
+Name the role, explain why it fits in 2-3 sentences, then answer from that perspective.
+If the role is uncertain, ask up to 2 positioning questions first.
+```
+
+#### Move 2: Ask Before Answering
+
+Use when the user wants a precise plan, decision, strategy, or recommendation.
+
+Reusable instruction:
+
+```text
+Before giving a solution, ask me one question at a time.
+Keep asking until you have enough confidence to understand my real goal, constraints, and success criteria.
+Then give the answer.
+```
+
+Use a practical confidence threshold. Do not chase perfect certainty forever.
+
+#### Move 3: Debate The Idea
+
+Use when the user presents an opinion, proposal, strategy, architecture, product idea, or argument.
+
+Reusable instruction:
+
+```text
+Act as a thoughtful opponent.
+Challenge this idea from multiple angles.
+Point out weak assumptions, missing evidence, hidden tradeoffs, and failure cases.
+Then help me revise the idea into a stronger version.
+```
+
+The goal is not negativity. The goal is strengthening the idea.
+
+#### Move 4: Pre-Mortem The Plan
+
+Use when the user is preparing a project, launch, implementation, event, workflow, or decision.
+
+Reusable instruction:
+
+```text
+Assume this plan failed badly.
+Write a realistic failure review:
+1. When did warning signs first appear?
+2. What was the most damaging decision?
+3. What core risk was ignored?
+4. What should have been changed first?
+5. What early signals should we monitor next time?
+Base the analysis on realistic comparable cases.
+```
+
+Prefer concrete operational risks over abstract warnings.
+
+#### Move 5: Reverse-Engineer The Prompt
+
+Use when the user provides an example output, screenshot, article, design, code sample, or style reference.
+
+Reusable instruction:
+
+```text
+Analyze this example as a target output.
+Infer the prompt or instructions that could reliably produce something with a similar structure, style, quality bar, and constraints.
+Explain what each part of the inferred prompt controls.
+```
+
+Use this for learning patterns, not copying blindly.
+
+#### Move 6: Dual-Layer Explanation
+
+Use when the user is learning something unfamiliar.
+
+Reusable instruction:
+
+```text
+Explain this in two layers:
+1. Beginner version: use concrete analogies and plain language.
+2. Professional version: use precise terminology and avoid factual shortcuts.
+Then connect the two versions so I can learn the real concept without staying at a shallow level.
+```
+
+If the user still seems confused, recurse with the same two-layer method on the confusing sub-concept.
+
+## Answer Quality Checklist
+
+Before finalizing an answer, check:
+
+- Did I identify the user's real goal?
+- Did I add or ask for the missing context that matters?
+- Did I choose the right thinking mode?
+- Did I avoid giving a generic answer too early?
+- Did I surface assumptions, risks, or tradeoffs when relevant?
+- Did I make the output directly usable?
+
+## Output Patterns
+
+### For Improving A Prompt
+
+```text
+Improved Prompt:
+[rewritten prompt]
+
+Why This Works:
+- [reason 1]
+- [reason 2]
+- [reason 3]
+
+Optional Variants:
+- Short version: [...]
+- Strict version: [...]
+- Exploratory version: [...]
+```
+
+### For Clarifying A Vague Request
+
+```text
+What I Think You Want:
+[interpretation]
+
+One Key Question:
+[question]
+
+Suggested Better Prompt:
+[prompt draft]
+```
+
+### For Strengthening A Plan
+
+```text
+Strongest Version Of The Plan:
+[...]
+
+Likely Failure Modes:
+[...]
+
+Questions To Resolve:
+[...]
+
+Next Best Step:
+[...]
+```
+
+### For Learning A Concept
+
+```text
+Beginner Version:
+[...]
+
+Professional Version:
+[...]
+
+Bridge Between Them:
+[...]
+
+Follow-Up Questions Worth Asking:
+[...]
+```
+
+## Guardrails
+
+- Do not over-optimize wording while ignoring context
+- Do not ask endless questions
+- Do not flatter the user's idea by default
+- Do not turn every answer into a prompt template
+- Do not invent expertise when the domain requires verification
+- When facts may be current, legal, financial, medical, or safety-sensitive, verify from reliable sources before making strong claims
+
+## Final Reminder
+
+The purpose of this skill is to improve thinking, not decorate prompts.
+
+A strong prompt tells the AI:
+
+- what role to think from
+- what context matters
+- what uncertainty remains
+- what quality bar to meet
+- what failure modes to check
+- what form the answer should take

@@ -1,0 +1,16 @@
+{
+  "name": "@agenthub/chain",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "8004-solana": "latest",
+    "@solana/web3.js": "latest"
+  }
+}

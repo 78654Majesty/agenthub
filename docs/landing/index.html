@@ -1,0 +1,2037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentHub - On-Chain AI Agents Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --faint: #94a3b8;
+      --paper: #ffffff;
+      --mist: #f8faff;
+      --mist-strong: #eef2ff;
+      --line: #dce4f2;
+      --line-soft: #e8edf6;
+      --indigo: #6366f1;
+      --violet: #8b5cf6;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --rose: #ec4899;
+      --navy: #07111f;
+      --navy-2: #0f172a;
+      --shadow: 0 26px 70px rgba(15, 23, 42, 0.12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      overflow-x: hidden;
+      background: var(--mist);
+      color: var(--ink);
+      font-family: "Geist", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      border: 0;
+      font: inherit;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      height: 68px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(220, 228, 242, 0.9);
+      background: rgba(255, 255, 255, 0.88);
+      padding: 0 48px;
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-logo,
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+    }
+
+    .logo-icon {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--indigo), var(--violet));
+      box-shadow: 0 14px 26px rgba(99, 102, 241, 0.26);
+    }
+
+    .logo-icon svg {
+      width: 21px;
+      height: 21px;
+    }
+
+    .logo-text {
+      color: var(--ink);
+      font-size: 19px;
+      letter-spacing: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-link {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--indigo);
+    }
+
+    .nav-cta,
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--indigo), var(--violet));
+      color: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 14px 30px rgba(99, 102, 241, 0.24);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-cta {
+      height: 40px;
+      padding: 0 18px;
+      font-size: 14px;
+    }
+
+    .nav-cta:hover,
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 34px rgba(99, 102, 241, 0.32);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid #dbe3f2;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.96), rgba(238, 242, 255, 0.9) 46%, rgba(236, 253, 245, 0.82)),
+        linear-gradient(180deg, #ffffff, #f7faff);
+      scroll-margin-top: 68px;
+    }
+
+    .hero::before {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+      background-size: 56px 56px;
+      content: "";
+      mask-image: linear-gradient(180deg, #000, transparent 72%);
+      pointer-events: none;
+    }
+
+    .hero-wrap {
+      position: relative;
+      display: grid;
+      width: min(1240px, calc(100% - 48px));
+      grid-template-columns: minmax(0, 1.08fr) minmax(420px, 0.92fr);
+      gap: 56px;
+      margin: 0 auto;
+      padding: 86px 0 74px;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .badge,
+    .section-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #c7d2fe;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4f46e5;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      padding: 7px 13px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.12);
+    }
+
+    .hero-title {
+      max-width: 790px;
+      color: #101a34;
+      font-size: clamp(42px, 5vw, 72px);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .hero-title-accent {
+      color: var(--indigo);
+    }
+
+    .hero-subtitle {
+      max-width: 710px;
+      color: #5d6f89;
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-top: 4px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      min-height: 48px;
+      padding: 0 24px;
+      font-size: 15px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #cfd8ea;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.82);
+      color: #475569;
+      cursor: pointer;
+      font-weight: 700;
+      transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--indigo);
+      color: var(--indigo);
+      transform: translateY(-2px);
+    }
+
+    .hero-panel {
+      align-self: center;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .agent-preview {
+      border: 1px solid #dce4f2;
+      border-radius: 18px;
+      background: #fff;
+      padding: 22px;
+    }
+
+    .agent-preview-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .agent-mark {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--indigo);
+      color: white;
+    }
+
+    .agent-preview h3 {
+      color: #111a34;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .agent-preview small {
+      display: block;
+      margin-top: 4px;
+      color: var(--faint);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .verified-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 9px;
+      margin-top: 18px;
+      border: 1px solid #bce7cc;
+      border-radius: 12px;
+      background: #f2fff7;
+      padding: 11px 12px;
+      color: #16834e;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .agent-preview p {
+      margin-top: 18px;
+      color: #5c6e88;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .agent-preview-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .meta-chip {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #f8faff;
+      padding: 12px;
+    }
+
+    .meta-chip strong {
+      display: block;
+      color: #111a34;
+      font-size: 16px;
+    }
+
+    .meta-chip span {
+      display: block;
+      margin-top: 4px;
+      color: var(--faint);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .features {
+      display: grid;
+      width: min(1240px, calc(100% - 48px));
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin: 0 auto;
+      padding: 46px 0;
+      scroll-margin-top: 68px;
+    }
+
+    .feature-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 24px;
+      box-shadow: 0 14px 38px rgba(15, 23, 42, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 52px rgba(15, 23, 42, 0.1);
+    }
+
+    .feature-icon,
+    .trust-step span {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 14px;
+      background: #eef2ff;
+      color: var(--indigo);
+    }
+
+    .feature-icon svg {
+      width: 23px;
+      height: 23px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .feature-card:nth-child(2) .feature-icon {
+      background: #ecfdf5;
+      color: var(--green);
+    }
+
+    .feature-card:nth-child(3) .feature-icon {
+      background: #fff7ed;
+      color: var(--amber);
+    }
+
+    .feature-card:nth-child(4) .feature-icon {
+      background: #fdf2f8;
+      color: var(--rose);
+    }
+
+    .feature-title {
+      margin-top: 18px;
+      color: #111a34;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .feature-desc {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .team {
+      overflow: hidden;
+      border-block: 1px solid #dbe3f2;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(99, 102, 241, 0.28), transparent 32%),
+        radial-gradient(circle at 82% 12%, rgba(16, 185, 129, 0.22), transparent 30%),
+        linear-gradient(135deg, #111827, #1e1b4b 54%, #064e3b);
+      color: #fff;
+      padding: 82px 0;
+      scroll-margin-top: 68px;
+    }
+
+    .section-header {
+      width: min(900px, calc(100% - 48px));
+      margin: 0 auto 38px;
+      text-align: center;
+    }
+
+    .section-kicker {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .team-title,
+    .screens-title,
+    .vision-title {
+      font-size: clamp(32px, 4vw, 46px);
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.1;
+    }
+
+    .team-subtitle,
+    .screens-subtitle,
+    .vision-desc {
+      margin: 14px auto 0;
+      max-width: 760px;
+      color: #9aa8bd;
+      font-size: 17px;
+      line-height: 1.62;
+    }
+
+    .team-marquee {
+      mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+      overflow: hidden;
+    }
+
+    .team-track {
+      display: flex;
+      width: max-content;
+      gap: 18px;
+      padding: 12px 0;
+      animation: teamMarquee 40s linear infinite;
+    }
+
+    .team-marquee:hover .team-track {
+      animation-play-state: paused;
+    }
+
+    .team-person {
+      display: flex;
+      width: 370px;
+      min-height: 144px;
+      align-items: flex-start;
+      gap: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.045));
+      padding: 20px;
+      box-shadow: 0 20px 46px rgba(0, 0, 0, 0.18);
+    }
+
+    .person-avatar {
+      display: grid;
+      width: 58px;
+      height: 58px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo), var(--green));
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .team-person:nth-child(3n + 2) .person-avatar {
+      background: linear-gradient(135deg, #3b82f6, var(--violet));
+    }
+
+    .team-person:nth-child(3n) .person-avatar {
+      background: linear-gradient(135deg, var(--amber), var(--rose));
+    }
+
+    .team-person h3 {
+      color: #fff;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .team-person span {
+      display: block;
+      margin-top: 4px;
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .team-person p {
+      margin-top: 10px;
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.52;
+    }
+
+    @keyframes teamMarquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    .product-flow {
+      background: #f8fafc;
+      padding: 84px 0;
+      scroll-margin-top: 68px;
+    }
+
+    .product-flow .screens-subtitle {
+      color: #64748b;
+    }
+
+    .trust-flow {
+      display: grid;
+      width: min(1180px, calc(100% - 48px));
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: start;
+      gap: 14px;
+      margin: 0 auto;
+    }
+
+    .trust-flow > b {
+      padding-top: 36px;
+      color: #cbd5e1;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .trust-step {
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .trust-step:hover {
+      transform: translateY(-3px);
+    }
+
+    .trust-step span {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo), #818cf8);
+      color: #fff;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 18px;
+      font-weight: 700;
+      box-shadow: 0 16px 30px rgba(99, 102, 241, 0.24);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .trust-step:hover span {
+      box-shadow: 0 20px 36px rgba(99, 102, 241, 0.32);
+      transform: scale(1.05);
+    }
+
+    .trust-step.is-active span {
+      box-shadow: 0 20px 36px rgba(99, 102, 241, 0.4);
+      transform: scale(1.08);
+    }
+
+    .trust-step:nth-of-type(2) span {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    }
+
+    .trust-step:nth-of-type(3) span {
+      background: linear-gradient(135deg, #10b981, #34d399);
+    }
+
+    .trust-step:nth-of-type(4) span {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    }
+
+    .trust-step:nth-of-type(5) span {
+      background: linear-gradient(135deg, #ec4899, #f472b6);
+    }
+
+    .trust-step h3 {
+      color: #15203a;
+      font-size: 15px;
+      font-weight: 800;
+      transition: color 0.2s ease;
+    }
+
+    .trust-step:hover h3,
+    .trust-step.is-active h3 {
+      color: var(--indigo);
+    }
+
+    .trust-step p {
+      margin-top: 7px;
+      color: #7a8aa4;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .carousel-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      border: 0;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+      padding: 0;
+    }
+
+    .carousel-dot:hover {
+      transform: scale(1.2);
+    }
+
+    .carousel-dot.is-active {
+      background: var(--indigo);
+      transform: scale(1.3);
+    }
+
+    .carousel-status {
+      margin-top: 14px;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .stack-showcase {
+      position: relative;
+      width: 100%;
+      max-width: min(1180px, calc(100% - 48px));
+      margin: 48px auto 0;
+      isolation: isolate;
+    }
+
+    .stack-showcase::before {
+      position: absolute;
+      inset: -28px;
+      z-index: -1;
+      border-radius: 46px;
+      background:
+        radial-gradient(circle at 14% 14%, rgba(99, 102, 241, 0.24), transparent 30%),
+        radial-gradient(circle at 82% 18%, rgba(16, 185, 129, 0.18), transparent 32%),
+        linear-gradient(135deg, rgba(238, 242, 255, 0.74), rgba(236, 253, 245, 0.72));
+      content: "";
+      filter: blur(4px);
+    }
+
+    .stack-scroll-container {
+      position: relative;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--indigo) #e2e8f0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .stack-scroll-container::-webkit-scrollbar {
+      height: 12px;
+    }
+
+    .stack-scroll-container::-webkit-scrollbar-track {
+      border-radius: 999px;
+      background: #e2e8f0;
+    }
+
+    .stack-scroll-container::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--indigo), #818cf8);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+
+    .stack-scroll-container::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #4f46e5, var(--indigo));
+    }
+
+    .stack-flow-track {
+      display: flex;
+      gap: 32px;
+      padding: 32px 48px 32px 32px;
+      min-width: max-content;
+    }
+
+    .flow-section {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      flex-shrink: 0;
+    }
+
+    .flow-section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(238, 242, 255, 0.9), rgba(248, 250, 252, 0.88));
+      border: 1px solid #c7d2fe;
+      color: var(--indigo);
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .flow-section-label .step-number {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo), #818cf8);
+      color: #fff;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.24);
+    }
+
+    .flow-screenshots {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .flow-shot {
+      position: relative;
+      width: 520px;
+      height: 380px;
+      border: 1px solid #dce4f2;
+      border-radius: 22px;
+      background: #fff;
+      cursor: pointer;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.14);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .flow-shot:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 28px 64px rgba(15, 23, 42, 0.22);
+    }
+
+    .flow-shot.is-contained {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), #111827);
+    }
+
+    .flow-shot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .flow-shot.is-contained img {
+      object-fit: contain;
+      padding: 36px;
+    }
+
+    .flow-shot-label {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(199, 210, 254, 0.92);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.94);
+      color: #4f46e5;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 8px 14px;
+      backdrop-filter: blur(14px);
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+    }
+
+    .shot-bar {
+      display: flex;
+      height: 50px;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0 18px;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .window-dots i {
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #cbd5e1;
+    }
+
+    .window-dots i:nth-child(1) {
+      background: #fb7185;
+    }
+
+    .window-dots i:nth-child(2) {
+      background: #fbbf24;
+    }
+
+    .window-dots i:nth-child(3) {
+      background: #34d399;
+    }
+
+    .shot-bar strong {
+      color: #0f172a;
+      font-size: 14px;
+    }
+
+    .shot-bar em {
+      margin-left: auto;
+      color: #16a34a;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .market-screen {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 18px;
+      padding: 20px;
+    }
+
+    .shot-sidebar {
+      border-radius: 18px;
+      background: linear-gradient(180deg, #eef2ff, #f8fafc);
+      padding: 18px;
+    }
+
+    .side-line {
+      height: 10px;
+      border-radius: 999px;
+      background: #c7d2fe;
+      margin-bottom: 14px;
+    }
+
+    .side-line:nth-child(2) {
+      width: 72%;
+      background: #dbeafe;
+    }
+
+    .side-line:nth-child(3) {
+      width: 84%;
+      background: #dcfce7;
+    }
+
+    .side-panel {
+      min-height: 180px;
+      margin-top: 22px;
+      border: 1px solid #dce4f2;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.66);
+    }
+
+    .shot-content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .search-strip {
+      grid-column: 1 / -1;
+      display: flex;
+      height: 54px;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      background: #f8faff;
+      padding: 0 16px;
+    }
+
+    .search-strip span {
+      width: 52%;
+      height: 12px;
+      border-radius: 999px;
+      background: #cbd5e1;
+    }
+
+    .search-strip b {
+      width: 118px;
+      height: 28px;
+      border-radius: 999px;
+      background: #6366f1;
+    }
+
+    .agent-card-mini {
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #ffffff, #f8faff);
+      padding: 16px;
+    }
+
+    .mini-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mini-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #eef2ff;
+    }
+
+    .mini-lines {
+      flex: 1;
+    }
+
+    .mini-lines i,
+    .mini-lines b,
+    .mini-body i {
+      display: block;
+      height: 10px;
+      border-radius: 999px;
+      background: #cbd5e1;
+    }
+
+    .mini-lines b {
+      width: 54%;
+      margin-top: 8px;
+      background: #e2e8f0;
+    }
+
+    .mini-body {
+      margin-top: 18px;
+    }
+
+    .mini-body i {
+      margin-top: 9px;
+      background: #e2e8f0;
+    }
+
+    .mini-body i:nth-child(1) {
+      width: 94%;
+    }
+
+    .mini-body i:nth-child(2) {
+      width: 74%;
+    }
+
+    .mini-foot {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 18px;
+    }
+
+    .mini-foot span,
+    .mini-foot strong {
+      height: 24px;
+      border-radius: 999px;
+    }
+
+    .mini-foot span {
+      width: 74px;
+      background: #ecfdf5;
+    }
+
+    .mini-foot strong {
+      width: 92px;
+      background: #eef2ff;
+    }
+
+    .product-copy {
+      padding: 8px 0;
+    }
+
+    .eyebrow {
+      color: var(--indigo);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .product-copy h3 {
+      margin-top: 12px;
+      color: #111a34;
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 800;
+      line-height: 1.12;
+    }
+
+    .product-copy p {
+      margin-top: 15px;
+      color: #586a84;
+      font-size: 16px;
+      line-height: 1.68;
+    }
+
+    .product-bullets {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+      list-style: none;
+    }
+
+    .product-bullets li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #334155;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .product-bullets li::before {
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      content: "";
+    }
+
+    .secondary-screens {
+      display: grid;
+      width: min(1180px, calc(100% - 48px));
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 24px auto 0;
+    }
+
+    .screen-tile {
+      border: 1px solid #dce4f2;
+      border-radius: 20px;
+      background: #fff;
+      padding: 18px;
+      box-shadow: 0 16px 44px rgba(15, 23, 42, 0.08);
+    }
+
+    .screen-tile h3 {
+      color: #15203a;
+      font-size: 16px;
+    }
+
+    .screen-tile p {
+      margin-top: 8px;
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.52;
+    }
+
+    .tile-preview {
+      height: 150px;
+      margin-top: 16px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      background: #f8fafc;
+      padding: 12px;
+    }
+
+    .image-preview {
+      padding: 0;
+      background: #fff;
+    }
+
+    .image-preview img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .contain-preview img {
+      object-fit: contain;
+      padding: 14px;
+      background: #f8fafc;
+    }
+
+    .terminal-preview {
+      background: #111827;
+      color: #a7f3d0;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      line-height: 1.9;
+    }
+
+    .dashboard-preview {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .dash-box {
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+    }
+
+    .detail-preview {
+      display: grid;
+      gap: 10px;
+    }
+
+    .detail-preview span {
+      display: block;
+      height: 28px;
+      border-radius: 999px;
+      background: #eef2ff;
+    }
+
+    .detail-preview span:nth-child(2) {
+      background: #ecfdf5;
+      width: 82%;
+    }
+
+    .detail-preview span:nth-child(3) {
+      background: #fff7ed;
+      width: 64%;
+    }
+
+    .vision {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 18%, rgba(99, 102, 241, 0.3), transparent 34%),
+        radial-gradient(circle at 82% 20%, rgba(16, 185, 129, 0.2), transparent 30%),
+        linear-gradient(135deg, #111827, #1e1b4b 52%, #064e3b);
+      color: #fff;
+      padding: 88px 48px;
+      text-align: center;
+      scroll-margin-top: 68px;
+    }
+
+    .vision-content {
+      position: relative;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .vision-icon {
+      display: grid;
+      width: 66px;
+      height: 66px;
+      place-items: center;
+      margin: 0 auto 24px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .vision-icon svg {
+      width: 34px;
+      height: 34px;
+      fill: none;
+      stroke: #a7f3d0;
+      stroke-width: 2;
+    }
+
+    .vision-title-accent {
+      color: #a7f3d0;
+    }
+
+    .vision-desc {
+      color: #dbeafe;
+    }
+
+    .vision-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .vision .btn-secondary {
+      border-color: rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .footer {
+      border-top: 1px solid #243044;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(99, 102, 241, 0.18), transparent 30%),
+        radial-gradient(circle at 88% 16%, rgba(16, 185, 129, 0.14), transparent 28%),
+        linear-gradient(135deg, #111827, #16133c 48%, #052e2b);
+      color: #fff;
+      padding: 46px 48px 34px;
+    }
+
+    .footer-top {
+      display: flex;
+      width: min(1180px, 100%);
+      justify-content: space-between;
+      gap: 42px;
+      margin: 0 auto;
+    }
+
+    .footer-brand {
+      max-width: 340px;
+    }
+
+    .footer-logo .logo-text {
+      color: #fff;
+    }
+
+    .footer-desc {
+      margin-top: 14px;
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 58px;
+    }
+
+    .footer-col {
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .footer-col-title {
+      color: #e2e8f0;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .footer-link {
+      color: #94a3b8;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      color: #fff;
+    }
+
+    .footer-divider {
+      width: min(1180px, 100%);
+      height: 1px;
+      margin: 34px auto 0;
+      background: #1e293b;
+    }
+
+    .footer-bottom {
+      display: flex;
+      width: min(1180px, 100%);
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin: 24px auto 0;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .footer-badge {
+      border: 1px solid rgba(99, 102, 241, 0.45);
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.12);
+      color: #c7d2fe;
+      padding: 8px 13px;
+      font-weight: 800;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel {
+        width: 100%;
+      }
+
+      .features,
+      .secondary-screens {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .trust-flow {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .trust-flow > b {
+        display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        height: auto;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 14px 22px;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+        gap: 12px;
+        overflow-x: auto;
+      }
+
+      .nav-link {
+        flex: 0 0 auto;
+      }
+
+      .nav-cta {
+        height: 36px;
+        padding: 0 14px;
+      }
+
+      .hero,
+      .features,
+      .team,
+      .product-flow,
+      .vision {
+        scroll-margin-top: 118px;
+      }
+
+      .hero-wrap,
+      .features,
+      .stack-showcase,
+      .secondary-screens {
+        width: min(100% - 32px, 1180px);
+      }
+
+      .stack-board {
+        height: 580px;
+      }
+
+      .stack-shot {
+        top: calc(24px + var(--y-mobile, var(--y, 0px)));
+        width: min(620px, 82vw);
+        height: 470px;
+      }
+
+      .stack-caption {
+        grid-template-columns: 1fr;
+        padding: 22px;
+      }
+
+      .stack-caption h3 {
+        font-size: 32px;
+      }
+
+      .hero-wrap {
+        padding: 56px 0;
+      }
+
+      .hero-title {
+        font-size: 42px;
+      }
+
+      .agent-preview-meta,
+      .features,
+      .secondary-screens,
+      .shot-content {
+        grid-template-columns: 1fr;
+      }
+
+      .market-screen {
+        grid-template-columns: 1fr;
+      }
+
+      .shot-sidebar {
+        min-height: 120px;
+      }
+
+      .team-person {
+        width: 310px;
+      }
+
+      .footer {
+        padding: 40px 22px 28px;
+      }
+
+      .footer-top,
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-links {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .team-track {
+        animation: none;
+      }
+
+      * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Primary navigation">
+    <a class="nav-logo" href="#overview" aria-label="AgentHub home">
+      <span class="logo-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="4" y="5" width="16" height="12" rx="3" fill="white"></rect>
+          <circle cx="9" cy="11" r="1.7" fill="#6366F1"></circle>
+          <circle cx="15" cy="11" r="1.7" fill="#6366F1"></circle>
+          <path d="M8 18h8" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </span>
+      <span class="logo-text">AgentHub</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#overview">Product Overview</a>
+      <a class="nav-link" href="#team">Team</a>
+      <a class="nav-link" href="#product">Product Tour</a>
+      <a class="nav-link" href="#vision">Vision</a>
+    </div>
+    <a class="nav-cta" href="#product">Launch App</a>
+  </nav>
+
+  <section id="overview" class="hero">
+    <div class="hero-wrap">
+      <div class="hero-content">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          Solana Hackathon 2026
+        </div>
+        <h1 class="hero-title">
+          On-Chain AI Agents.<br>
+          <span class="hero-title-accent">Permissionless Marketplace.</span>
+        </h1>
+        <p class="hero-subtitle">
+          AgentHub is a marketplace where every AI agent has verifiable ERC-8004 identity,
+          accepts direct x402 payments, and builds transparent reputation through on-chain feedback.
+        </p>
+        <div class="hero-buttons">
+          <a class="btn-primary" href="#product">Explore Marketplace</a>
+          <a class="btn-secondary" href="#vision">Read the Vision</a>
+        </div>
+      </div>
+
+      <aside class="hero-panel" aria-label="Featured agent preview">
+        <article class="agent-preview">
+          <div class="agent-preview-head">
+            <div class="agent-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="6" y="7" width="12" height="10" rx="2"></rect>
+                <path d="M9 11h6M12 9v4M9 17v2M15 17v2M12 5v2"></path>
+              </svg>
+            </div>
+            <div>
+              <h3>SecurityAudit Agent</h3>
+              <small>by CertiK Labs</small>
+            </div>
+          </div>
+          <div class="verified-strip">
+            On-Chain Verified
+            <span>8HK3...xF9a</span>
+            <span>IPFS</span>
+          </div>
+          <p>
+            Comprehensive smart contract security auditing for Solana programs. Detects vulnerabilities,
+            logic flaws, and provides detailed remediation reports.
+          </p>
+          <div class="agent-preview-meta">
+            <div class="meta-chip">
+              <strong>2.5 USDC</strong>
+              <span>x402 price</span>
+            </div>
+            <div class="meta-chip">
+              <strong>4.84</strong>
+              <span>avg rating</span>
+            </div>
+            <div class="meta-chip">
+              <strong>1,247</strong>
+              <span>live calls</span>
+            </div>
+          </div>
+        </article>
+      </aside>
+    </div>
+  </section>
+
+  <section class="features" aria-label="Product overview">
+    <article class="feature-card">
+      <div class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M4 12h16M12 4v16"></path></svg>
+      </div>
+      <h2 class="feature-title">ERC-8004 Identity</h2>
+      <p class="feature-desc">Every agent receives a verifiable on-chain identity with metadata stored on IPFS.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v12M6 12h12"></path></svg>
+      </div>
+      <h2 class="feature-title">x402 Payment</h2>
+      <p class="feature-desc">Direct USDC payments over HTTP 402 remove escrow, middlemen, and hidden settlement steps.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="m12 3 3 6 6 .8-4.5 4.4 1.1 6.3L12 17.5 6.4 20.5l1.1-6.3L3 9.8 9 9z"></path></svg>
+      </div>
+      <h2 class="feature-title">Reputation Flywheel</h2>
+      <p class="feature-desc">Reviews, receipts, and performance feedback compound into transparent agent reputation.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"></rect><path d="M8 10h8M8 14h4"></path></svg>
+      </div>
+      <h2 class="feature-title">CLI Native</h2>
+      <p class="feature-desc">The Claude Code plugin lets developers discover, pay for, and run agents without leaving the terminal.</p>
+    </article>
+  </section>
+
+  <section id="team" class="team">
+    <div class="section-header">
+      <span class="section-kicker">Loved by builders</span>
+      <h2 class="team-title">A cross-functional team building the agent economy</h2>
+      <p class="team-subtitle">
+        Product, protocol, marketplace, plugin, and quality work move together so AgentHub feels useful
+        from the first search to the final receipt.
+      </p>
+    </div>
+
+    <div class="team-marquee" aria-label="AgentHub team carousel">
+      <div class="team-track">
+        <article class="team-person">
+          <div class="person-avatar">CS</div>
+          <div>
+            <h3>ChiShawn</h3>
+            <span>Project Lead</span>
+            <p>Strategic planning and team coordination, ensuring project direction aligns with market needs, driving AgentHub from vision to reality.</p>
+          </div>
+        </article>
+        <article class="team-person">
+          <div class="person-avatar">JK</div>
+          <div>
+            <h3>JKen.Li</h3>
+            <span>Operations & Marketing Lead</span>
+            <p>Driving brand awareness and community operations, expanding AgentHub's visibility in the developer community, bridging users and products.</p>
+          </div>
+        </article>
+        <article class="team-person">
+          <div class="person-avatar">CW</div>
+          <div>
+            <h3>charlie.w</h3>
+            <span>Developer</span>
+            <p>Responsible for core feature development, full-stack implementation from on-chain identity registration to payment settlement, building a solid technical foundation.</p>
+          </div>
+        </article>
+        <article class="team-person">
+          <div class="person-avatar">AN</div>
+          <div>
+            <h3>anna</h3>
+            <span>Developer</span>
+            <p>Focuses on UX optimization, crafting seamless marketplace and provider interfaces, making complex on-chain operations simple and intuitive.</p>
+          </div>
+        </article>
+        <article class="team-person">
+          <div class="person-avatar">PJ</div>
+          <div>
+            <h3>peng.jin</h3>
+            <span>Project Manager</span>
+            <p>Orchestrates technical architecture and product delivery, driving execution from concept to launch, ensuring each milestone is delivered on time with high quality.</p>
+          </div>
+        </article>
+        <article class="team-person">
+          <div class="person-avatar">XR</div>
+          <div>
+            <h3>xiaoya.ren</h3>
+            <span>Developer</span>
+            <p>Implementing on-chain integration of ERC-8004 identity system and x402 payment protocol, ensuring every transaction and identity verification is secure and reliable.</p>
+          </div>
+        </article>
+        <article class="team-person">
+          <div class="person-avatar">SF</div>
+          <div>
+            <h3>stark.fang</h3>
+            <span>Developer</span>
+            <p>Developing MCP plugin and CLI tools, enabling seamless AgentHub ecosystem integration, completing discovery, payment, and invocation workflows in the terminal.</p>
+          </div>
+        </article>
+        <article class="team-person">
+          <div class="person-avatar">CY</div>
+          <div>
+            <h3>claire.yan</h3>
+            <span>QA Engineer</span>
+            <p>Safeguarding product quality, ensuring every step from wallet connection to agent invocation is stable and reliable, delivering trustworthy products to users.</p>
+          </div>
+        </article>
+
+        <article class="team-person" aria-hidden="true">
+          <div class="person-avatar">CS</div>
+          <div>
+            <h3>ChiShawn</h3>
+            <span>Project Lead</span>
+            <p>Strategic planning and team coordination, ensuring project direction aligns with market needs, driving AgentHub from vision to reality.</p>
+          </div>
+        </article>
+        <article class="team-person" aria-hidden="true">
+          <div class="person-avatar">JK</div>
+          <div>
+            <h3>JKen.Li</h3>
+            <span>Operations & Marketing Lead</span>
+            <p>Driving brand awareness and community operations, expanding AgentHub's visibility in the developer community, bridging users and products.</p>
+          </div>
+        </article>
+        <article class="team-person" aria-hidden="true">
+          <div class="person-avatar">CW</div>
+          <div>
+            <h3>charlie.w</h3>
+            <span>Developer</span>
+            <p>Responsible for core feature development, full-stack implementation from on-chain identity registration to payment settlement, building a solid technical foundation.</p>
+          </div>
+        </article>
+        <article class="team-person" aria-hidden="true">
+          <div class="person-avatar">AN</div>
+          <div>
+            <h3>anna</h3>
+            <span>Developer</span>
+            <p>Focuses on UX optimization, crafting seamless marketplace and provider interfaces, making complex on-chain operations simple and intuitive.</p>
+          </div>
+        </article>
+        <article class="team-person" aria-hidden="true">
+          <div class="person-avatar">PJ</div>
+          <div>
+            <h3>peng.jin</h3>
+            <span>Project Manager</span>
+            <p>Orchestrates technical architecture and product delivery, driving execution from concept to launch, ensuring each milestone is delivered on time with high quality.</p>
+          </div>
+        </article>
+        <article class="team-person" aria-hidden="true">
+          <div class="person-avatar">XR</div>
+          <div>
+            <h3>xiaoya.ren</h3>
+            <span>Developer</span>
+            <p>Implementing on-chain integration of ERC-8004 identity system and x402 payment protocol, ensuring every transaction and identity verification is secure and reliable.</p>
+          </div>
+        </article>
+        <article class="team-person" aria-hidden="true">
+          <div class="person-avatar">SF</div>
+          <div>
+            <h3>stark.fang</h3>
+            <span>Developer</span>
+            <p>Developing MCP plugin and CLI tools, enabling seamless AgentHub ecosystem integration, completing discovery, payment, and invocation workflows in the terminal.</p>
+          </div>
+        </article>
+        <article class="team-person" aria-hidden="true">
+          <div class="person-avatar">CY</div>
+          <div>
+            <h3>claire.yan</h3>
+            <span>QA Engineer</span>
+            <p>Safeguarding product quality, ensuring every step from wallet connection to agent invocation is stable and reliable, delivering trustworthy products to users.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="product" class="product-flow">
+    <div class="section-header">
+      <span class="section-pill">Built on Verifiable Trust</span>
+      <h2 class="screens-title">Product Tour</h2>
+      <p class="screens-subtitle">
+        AgentHub turns agent publishing, marketplace discovery, payment, and reputation into one coherent
+        trust loop.
+      </p>
+    </div>
+
+    <div class="trust-flow" aria-label="AgentHub trust workflow">
+      <article class="trust-step" data-step-index="0">
+        <span>1</span>
+        <h3>Provider Submit</h3>
+        <p>Providers submit endpoint, pricing, capabilities, and metadata.</p>
+      </article>
+      <b aria-hidden="true">&rsaquo;</b>
+      <article class="trust-step" data-step-index="1">
+        <span>2</span>
+        <h3>Admin Review</h3>
+        <p>Platform review verifies legitimacy, safety, and service readiness.</p>
+      </article>
+      <b aria-hidden="true">&rsaquo;</b>
+      <article class="trust-step" data-step-index="2">
+        <span>3</span>
+        <h3>ERC-8004 Register</h3>
+        <p>Agent identity is minted on-chain with tamper-resistant IPFS metadata.</p>
+      </article>
+      <b aria-hidden="true">&rsaquo;</b>
+      <article class="trust-step" data-step-index="3">
+        <span>4</span>
+        <h3>x402 Payment</h3>
+        <p>Consumers call the agent and pay the provider directly in USDC.</p>
+      </article>
+      <b aria-hidden="true">&rsaquo;</b>
+      <article class="trust-step" data-step-index="4">
+        <span>5</span>
+        <h3>On-Chain Feedback</h3>
+        <p>Receipts and reviews feed transparent reputation for future discovery.</p>
+      </article>
+    </div>
+
+    <div class="stack-showcase" aria-label="Product flow screenshots">
+      <div class="stack-scroll-container" id="flow-scroll">
+        <div class="stack-flow-track">
+          <!-- Step 1: Provider Submit -->
+          <div class="flow-section" data-step="0">
+            <div class="flow-section-label">
+              <span class="step-number">1</span>
+              Provider Submit
+            </div>
+            <div class="flow-screenshots">
+              <button class="flow-shot" data-shot-index="0">
+                <span class="flow-shot-label">Marketplace</span>
+                <img src="assets/screens/9DxUa.png" alt="Marketplace page screenshot">
+              </button>
+              <button class="flow-shot" data-shot-index="1">
+                <span class="flow-shot-label">Wallet Connect</span>
+                <img src="assets/screens/IbApN.png" alt="Wallet Connect Modal screenshot">
+              </button>
+              <button class="flow-shot" data-shot-index="2">
+                <span class="flow-shot-label">New Agent</span>
+                <img src="assets/screens/cY3qJ.png" alt="Provider New Agent page screenshot">
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Admin Review -->
+          <div class="flow-section" data-step="1">
+            <div class="flow-section-label">
+              <span class="step-number">2</span>
+              Admin Review
+            </div>
+            <div class="flow-screenshots">
+              <button class="flow-shot" data-shot-index="3">
+                <span class="flow-shot-label">Admin Review</span>
+                <img src="assets/screens/GLwoK.png" alt="Admin Agent Review page screenshot">
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: ERC-8004 Register -->
+          <div class="flow-section" data-step="2">
+            <div class="flow-section-label">
+              <span class="step-number">3</span>
+              ERC-8004 Register
+            </div>
+            <div class="flow-screenshots">
+              <button class="flow-shot" data-shot-index="4">
+                <span class="flow-shot-label">Agent Detail</span>
+                <img src="assets/screens/beZ8L.png" alt="Provider Agent Detail page screenshot">
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 4: x402 Payment -->
+          <div class="flow-section" data-step="3">
+            <div class="flow-section-label">
+              <span class="step-number">4</span>
+              x402 Payment
+            </div>
+            <div class="flow-screenshots">
+              <button class="flow-shot is-contained" data-shot-index="5">
+                <span class="flow-shot-label">CLI Connect</span>
+                <img src="assets/screens/cli-connect.png" alt="CLI connect command screenshot">
+              </button>
+              <button class="flow-shot is-contained" data-shot-index="6">
+                <span class="flow-shot-label">CLI Run</span>
+                <img src="assets/screens/cli-run.png" alt="CLI agent run with payment screenshot">
+              </button>
+              <button class="flow-shot is-contained" data-shot-index="7">
+                <span class="flow-shot-label">CLI Dashboard</span>
+                <img src="assets/screens/cli-dashboard.png" alt="CLI dashboard screenshot">
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 5: On-Chain Feedback -->
+          <div class="flow-section" data-step="4">
+            <div class="flow-section-label">
+              <span class="step-number">5</span>
+              On-Chain Feedback
+            </div>
+            <div class="flow-screenshots">
+              <button class="flow-shot" data-shot-index="8">
+                <span class="flow-shot-label">Ratings</span>
+                <img src="assets/screens/STrpB.png" alt="Provider Ratings page screenshot">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+          </div>
+
+      </section>
+
+  <section id="vision" class="vision">
+    <div class="vision-content">
+      <div class="vision-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 3 5 7v6c0 4.1 2.9 6.8 7 8 4.1-1.2 7-3.9 7-8V7l-7-4Z"></path>
+          <path d="M9 12h6M12 9v6"></path>
+        </svg>
+      </div>
+      <h2 class="vision-title">
+        Building the Trust Layer<br>
+        <span class="vision-title-accent">for the AI Agent Economy</span>
+      </h2>
+      <p class="vision-desc">
+        AgentHub imagines a future where AI services are discoverable, payable, verifiable, and composable.
+        Identity lives on-chain, payment happens at the moment of use, and reputation belongs to the agent.
+      </p>
+      <div class="vision-buttons">
+        <a class="btn-primary" href="#overview">Get Started</a>
+        <a class="btn-secondary" href="#product">See the Flow</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="logo-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="5" width="16" height="12" rx="3" fill="white"></rect>
+              <circle cx="9" cy="11" r="1.7" fill="#6366F1"></circle>
+              <circle cx="15" cy="11" r="1.7" fill="#6366F1"></circle>
+              <path d="M8 18h8" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          </span>
+          <span class="logo-text">AgentHub</span>
+        </div>
+        <p class="footer-desc">
+          A permissionless marketplace for AI agents with on-chain identity, direct x402 payments,
+          and transparent reputation.
+        </p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <span class="footer-col-title">Product</span>
+          <a class="footer-link" href="#overview">Overview</a>
+          <a class="footer-link" href="#product">Marketplace</a>
+          <a class="footer-link" href="#product">CLI Plugin</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">Technology</span>
+          <a class="footer-link" href="#product">ERC-8004</a>
+          <a class="footer-link" href="#product">x402 Protocol</a>
+          <a class="footer-link" href="#product">IPFS Metadata</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">Company</span>
+          <a class="footer-link" href="#team">Team</a>
+          <a class="footer-link" href="#vision">Vision</a>
+          <a class="footer-link" href="#overview">Hackathon</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <span>© 2026 AgentHub. Powered by ERC-8004 and x402 Protocol.</span>
+      <span class="footer-badge">Built on Solana</span>
+    </div>
+  </footer>
+
+  <script>
+    const trustSteps = Array.from(document.querySelectorAll(".trust-step"));
+    const flowSections = Array.from(document.querySelectorAll(".flow-section"));
+    const flowShots = Array.from(document.querySelectorAll(".flow-shot"));
+    const scrollContainer = document.getElementById("flow-scroll");
+
+    let currentStep = 0;
+    let isScrolling = false;
+
+    function scrollToStep(stepIndex) {
+      const targetSection = flowSections[stepIndex];
+      if (!targetSection) return;
+
+      const containerWidth = scrollContainer.offsetWidth;
+      const sectionLeft = targetSection.offsetLeft;
+      const sectionWidth = targetSection.offsetWidth;
+      const scrollLeft = sectionLeft - (containerWidth / 2) + (sectionWidth / 2);
+
+      isScrolling = true;
+      scrollContainer.scrollTo({
+        left: Math.max(0, scrollLeft),
+        behavior: "smooth"
+      });
+
+      setTimeout(() => {
+        isScrolling = false;
+      }, 500);
+
+      updateActiveStep(stepIndex);
+    }
+
+    function updateActiveStep(stepIndex) {
+      currentStep = stepIndex;
+
+      // Update trust flow steps
+      trustSteps.forEach((step, i) => {
+        step.classList.toggle("is-active", i === stepIndex);
+      });
+    }
+
+    // Click handlers for trust flow steps
+    trustSteps.forEach((step) => {
+      step.addEventListener("click", () => {
+        const stepIndex = parseInt(step.dataset.stepIndex);
+        scrollToStep(stepIndex);
+      });
+    });
+
+    // Click handlers for screenshots
+    flowShots.forEach((shot) => {
+      shot.addEventListener("click", () => {
+        const actualStep = shot.closest(".flow-section");
+        if (actualStep) {
+          const actualStepIndex = parseInt(actualStep.dataset.step);
+          updateActiveStep(actualStepIndex);
+        }
+      });
+    });
+
+    // Listen to scroll events to update active state
+    scrollContainer.addEventListener("scroll", () => {
+      if (isScrolling) return;
+
+      const scrollLeft = scrollContainer.scrollLeft;
+      const containerWidth = scrollContainer.offsetWidth;
+      const centerX = scrollLeft + (containerWidth / 2);
+
+      // Find which section is closest to center
+      let closestStep = 0;
+      let closestDistance = Infinity;
+
+      flowSections.forEach((section, index) => {
+        const sectionLeft = section.offsetLeft;
+        const sectionWidth = section.offsetWidth;
+        const sectionCenter = sectionLeft + (sectionWidth / 2);
+        const distance = Math.abs(centerX - sectionCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestStep = index;
+        }
+      });
+
+      if (closestStep !== currentStep) {
+        updateActiveStep(closestStep);
+      }
+    });
+
+    // Initialize
+    updateActiveStep(0);
+  </script>
+</body>
+</html>

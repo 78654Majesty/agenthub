@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+
+# Build
+dist/
+.next/
+.turbo/
+out/
+*.tsbuildinfo
+next-env.d.ts
+package-lock.json
+*.egg-info/
+
+# Environment — .env.dev/.env.prod 提交，.env.local 不提交
+.env.local
+
+# Database
+*.db
+*.db-journal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code
+.claude/
+.mcp.json
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+.tmp-agenthub-wallet.json
+
+# Test
+coverage/
+.pytest_cache/
+__pycache__/
+*.pyc
+
+# Prisma
+agenthub-gateway/prisma/migrations/
+
+# Anchor (legacy, no longer used)
+target/
+/agenthub-gateway/pnpm-lock.yaml
+/.trae/
+.gstack/

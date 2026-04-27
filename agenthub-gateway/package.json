@@ -1,0 +1,46 @@
+{
+  "name": "@agenthub/root",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AgentHub Gateway — pnpm monorepo root",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "setup:dev": "node scripts/setup.js .env.dev",
+    "setup:local": "node scripts/setup.js .env.local",
+    "start:dev": "node scripts/setup.js .env.dev && pnpm dev",
+    "start:local": "node scripts/setup.js .env.local && pnpm dev",
+    "dev": "pnpm -r --parallel run dev",
+    "dev:gateway": "pnpm --filter @agenthub/gateway dev",
+    "dev:web": "pnpm --filter @agenthub/web dev",
+    "build": "pnpm -r run build",
+    "build:gateway": "pnpm --filter @agenthub/gateway build",
+    "build:web": "pnpm --filter @agenthub/web build",
+    "lint": "pnpm -r run lint",
+    "lint:fix": "pnpm -r run lint --fix",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "db:generate": "prisma generate --schema=prisma/schema.prisma",
+    "db:push": "prisma db push --schema=prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:reset": "prisma db push --schema=prisma/schema.prisma --force-reset && tsx prisma/seed.ts",
+    "clean": "pnpm -r exec rm -rf dist .next node_modules/.cache"
+  },
+  "dependencies": {
+    "8004-solana": "^0.8.3",
+    "@prisma/client": "6.19.3",
+    "@solana/web3.js": "^1.98.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "eslint": "^9.5.0",
+    "prettier": "^3.3.0",
+    "prisma": "6.19.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.5.0"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "incremental": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@agenthub/types": ["packages/types/src/index.ts"],
+      "@agenthub/types/*": ["packages/types/src/*"],
+      "@agenthub/auth": ["packages/auth/src/index.ts"],
+      "@agenthub/auth/*": ["packages/auth/src/*"],
+      "@agenthub/chain": ["packages/chain/src/index.ts"],
+      "@agenthub/chain/*": ["packages/chain/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", ".next"]
+}

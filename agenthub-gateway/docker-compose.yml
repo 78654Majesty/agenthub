@@ -1,0 +1,44 @@
+# ============================================
+# AgentHub Docker Compose
+#
+# Dev:  cp .env.dev .env && docker compose up --build
+# Prod: cp .env.prod .env && docker compose up -d --build
+# ============================================
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    container_name: agenthub-gateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=file:/app/data/agenthub.db?journal_mode=WAL
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: agenthub-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      gateway:
+        condition: service_healthy
+    environment:
+      - NEXT_PUBLIC_GATEWAY_URL=http://gateway:8080
+      - NEXT_PUBLIC_SOLANA_RPC_URL=${AGENTHUB_SOLANA_RPC_URL:-https://devnet.helius-rpc.com/?api-key=ea3297f1-582d-4b7d-b287-ecd5c8b05ecb}
+      - NEXT_PUBLIC_USDC_MINT=${USDC_MINT_ADDRESS:-4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU}

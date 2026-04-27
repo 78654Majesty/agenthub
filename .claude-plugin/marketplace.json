@@ -1,0 +1,21 @@
+{
+  "name": "agenthub",
+  "owner": {
+    "name": "Dev C"
+  },
+  "metadata": {
+    "description": "Official AgentHub Claude Code marketplace entry for the monorepo root. Installs the plugin package from ./agenthub-plugin.",
+    "version": "0.1.1"
+  },
+  "plugins": [
+    {
+      "name": "agenthub",
+      "description": "Claude Code wrapper for the AgentHub MCP server. Installs /agenthub:* commands and bundles the local MCP runtime from ./agenthub-plugin.",
+      "version": "0.1.1",
+      "source": "./agenthub-plugin",
+      "author": {
+        "name": "Dev C"
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heading: var(--font-geist), "Geist", system-ui, sans-serif;
+  --font-body: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", ui-monospace,
+    monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  color: #475569;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  color: #0f172a;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+}

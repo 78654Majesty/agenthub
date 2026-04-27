@@ -1,0 +1,31 @@
+{
+  "name": "@agenthub/plugin",
+  "version": "0.1.1",
+  "private": true,
+  "main": "src/index.ts",
+  "bin": {
+    "agenthub-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "node --import tsx --test src/**/*.test.ts",
+    "smoke:connect": "tsx src/dev/wallet-connect-smoke.ts",
+    "claude:config": "tsx src/dev/print-claude-code-config.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "@solana/kit": "^5.5.1",
+    "@solana/web3.js": "^1.98.0",
+    "@x402/fetch": "^2.10.0",
+    "@x402/svm": "^2.10.0",
+    "fastify": "^5.3.3",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

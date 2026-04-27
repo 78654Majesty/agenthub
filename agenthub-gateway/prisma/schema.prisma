@@ -1,0 +1,240 @@
+// ============================================================
+// AgentHub Gateway — Prisma Schema
+// 数据库: SQLite + WAL mode
+// 参考: docs/database-design.md v1.1
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 钱包身份（Consumer + Provider 共用，无 role 字段）
+// 有 Agent 记录 = Provider，有 Order 记录 = Consumer
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+model Wallet {
+  id          String   @id @default(cuid())
+  pubkey      String   @unique
+  source      String   @default("cli") // "cli" | "web"
+  createdAt   DateTime @default(now())
+  lastLoginAt DateTime?
+
+  agents   Agent[]
+  quotes   Quote[]
+  orders   Order[]
+  receipts Receipt[]
+  ratings  Rating[]
+
+  @@map("wallets")
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 认证挑战（短生命周期，替代 Redis）
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+model AuthChallenge {
+  id        String   @id @default(cuid())
+  wallet    String
+  nonce     String   @unique
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([wallet])
+  @@index([expiresAt])
+  @@map("auth_challenges")
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 管理员账户（独立于钱包体系，账号密码登录）
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
+
+  @@map("admin_users")
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Agent 定义（核心业务表）
+// status: "pending_review" | "approved" | "rejected" | "active" | "suspended"
+// chainStatus: "none" | "uploading" | "registered" | "failed"
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+model Agent {
+  id               String   @id @default(cuid())
+  providerWalletId String
+  providerWallet   Wallet   @relation(fields: [providerWalletId], references: [id])
+
+  name             String
+  description      String
+  capabilityTags   String                    // JSON: ["security","audit","solana"]
+  skills           String   @default("[]")   // JSON: ERC-8004 技能分类
+  domains          String   @default("[]")   // JSON: ERC-8004 领域分类
+  priceUsdcMicro   Int                       // 单次调用价格 (USDC × 10^6)
+  endpointUrl      String                    // x402 服务端 URL
+
+  inputSchema      String?                   // JSON: 输入格式定义
+  outputFormat     String?                   // JSON: 输出格式定义
+  model            String?                   // [已弃用] 保留兼容
+  imageUrl         String?                   // [已弃用] 保留兼容
+
+  // 审批状态
+  status           String   @default("pending_review")
+  reviewNote       String?
+  reviewedAt       DateTime?
+
+  // ERC-8004 链上信息
+  solAssetAddress  String?
+  ipfsCid          String?
+  ipfsUri          String?
+  solPublishTx     String?
+  chainStatus      String   @default("none")
+  registeredAt     DateTime?
+
+  // 冗余统计缓存
+  ratingAvg        Float    @default(0)
+  ratingCount      Int      @default(0)
+  totalOrders      Int      @default(0)
+  avgResponseTimeMs Int     @default(0)
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  quotes   Quote[]
+  orders   Order[]
+  receipts Receipt[]
+  ratings  Rating[]
+
+  @@index([status])
+  @@index([chainStatus])
+  @@index([providerWalletId])
+  @@map("agents")
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 报价（CLI match → 用户确认前的中间态）
+// status: "pending" | "accepted" | "expired" | "cancelled"
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+model Quote {
+  id               String   @id @default(cuid())
+  agentId          String
+  agent            Agent    @relation(fields: [agentId], references: [id])
+  consumerWalletId String
+  consumerWallet   Wallet   @relation(fields: [consumerWalletId], references: [id])
+
+  taskText         String
+  amountUsdcMicro  Int
+  status           String   @default("pending")
+  expiresAt        DateTime
+  createdAt        DateTime @default(now())
+
+  order Order?
+
+  @@index([status])
+  @@index([expiresAt])
+  @@map("quotes")
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 订单（记录 x402 交易结果）
+// status: "pending" | "completed" | "failed"
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+model Order {
+  id               String   @id @default(cuid())
+  quoteId          String   @unique
+  quote            Quote    @relation(fields: [quoteId], references: [id])
+  agentId          String
+  agent            Agent    @relation(fields: [agentId], references: [id])
+  consumerWalletId String
+  consumerWallet   Wallet   @relation(fields: [consumerWalletId], references: [id])
+
+  status           String   @default("pending")
+
+  // x402 支付信息
+  paymentTx        String?
+  paymentVerified  Boolean  @default(false)
+  paymentPayer     String?
+  paymentAmount    Int?     // USDC micro
+  paymentNetwork   String?  // "solana:devnet"
+
+  // Agent 执行结果
+  resultHash       String?
+  responseTimeMs   Int?
+  errorCode        String?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  receipt Receipt?
+
+  @@index([status])
+  @@index([agentId])
+  @@index([consumerWalletId])
+  @@map("orders")
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 收据（ERC-8004 Feedback 上链载体）
+// feedbackStatus: "pending" | "submitted" | "failed"
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+model Receipt {
+  id               String   @id @default(cuid())
+  orderId          String   @unique
+  order            Order    @relation(fields: [orderId], references: [id])
+  agentId          String
+  agent            Agent    @relation(fields: [agentId], references: [id])
+  consumerWalletId String
+  consumerWallet   Wallet   @relation(fields: [consumerWalletId], references: [id])
+
+  receiptHash      String
+  amountUsdcMicro  Int
+
+  feedbackStatus   String   @default("pending")
+  feedbackTx       String?
+  feedbackIpfsCid  String?
+  retryCount       Int      @default(0)
+  feedbackAt       DateTime?
+
+  createdAt        DateTime @default(now())
+
+  rating Rating?
+
+  @@index([feedbackStatus])
+  @@index([consumerWalletId])
+  @@map("receipts")
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 评分（通过 ERC-8004 Feedback 上链，tag1="starred"）
+// feedbackStatus: "pending" | "submitted" | "failed"
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+model Rating {
+  id               String   @id @default(cuid())
+  receiptId        String   @unique
+  receipt          Receipt  @relation(fields: [receiptId], references: [id])
+  agentId          String
+  agent            Agent    @relation(fields: [agentId], references: [id])
+  consumerWalletId String
+  consumerWallet   Wallet   @relation(fields: [consumerWalletId], references: [id])
+
+  score            Int      // 1-5
+  comment          String?
+
+  feedbackStatus   String   @default("pending")
+  feedbackTx       String?
+  feedbackIpfsCid  String?
+  retryCount       Int      @default(0)
+
+  createdAt        DateTime @default(now())
+
+  @@index([agentId])
+  @@index([feedbackStatus])
+  @@map("ratings")
+}
